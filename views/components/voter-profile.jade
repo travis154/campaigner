@@ -52,7 +52,27 @@ section
 					label.col-sm-3.control-label Appointed agent
 					section.col-sm-9
 						input(type="text", value=person.agent, placeholder="Agent who overlooks the person", data-id=person._id.toString(), data-field="agent").update-survey-text.form-control
+				hr
+				section.form-group
+					label.col-sm-3.control-label Registration location
+					section.col-sm-9
+						section.btn-group-vertical(data-toggle='buttons', data-field="registration_location", data-id=person._id.toString()).update-survey-mcq
+							-var list = ["Madaveli","Hoadehdhoo","Nadella","Male'","Hulhumale","Villingili","India","Malaysia","Sri Lanka"]
+								-each item in list
+									label(class=(person.registration_location == item ? "active" : "") + " btn btn-success")
+										|  #{item}
+										input(type="radio", name="registration_location")
+				section.form-group
+					label.col-sm-3.control-label Registration status
+					section.col-sm-9
+						section.btn-group-vertical(data-toggle='buttons', data-field="registration_status", data-id=person._id.toString()).update-survey-mcq
+							-var list = ["Form Filled","Processing","Rejected","Processed"]
+								-each item in list
+									label(class=(person.registration_status == item ? "active" : "") + " btn btn-success")
+										|  #{item}
+										input(type="radio", name="registration_status")
 				section.form-group
 					label.col-sm-3.control-label Remarks
 					section.col-sm-9
 						textarea.update-survey-text.form-control(data-field="remarks", data-id=person._id.toString())=person.remarks
+					
