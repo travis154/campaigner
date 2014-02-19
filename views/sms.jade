@@ -23,7 +23,7 @@ block content
 				section.form-group#recipient-toggle-location
 					label.col-sm-3.control-label Located in
 					section.col-sm-9
-						section.btn-group-vertical(data-toggle='buttons')#located_in
+						section.btn-group(data-toggle='buttons')#located_in
 							label.btn.btn-success.active
 								input(type="checkbox", name="recipient_type", value="Everyone")
 								| Madaveli
@@ -42,6 +42,7 @@ block content
 							label.btn.btn-success
 								input(type="checkbox", name="recipient_type", value="Bronze Members")
 								| Villingili
+						section#sms-recipient-names(style='line-height:25px')
 	
 				section.form-group#recipient-toggle-custom
 					label.col-sm-3.control-label Numbers

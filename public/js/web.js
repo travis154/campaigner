@@ -196,6 +196,24 @@ $(function(){
 		})
 
 	});
+	$("#recipient_type label, #recipient-toggle-location label").click(function(){
+		setTimeout(function(){
+			var type = $("#recipient_type label.active").text();
+			var recipients;
+		
+			if(type == "Custom"){
+				recipients = $("#custom-recipients").val().split(",")
+			}else if(type == "Members" || type == "Voters"){
+				recipients = $("#recipient-toggle-location label.active").map(function(){return $(this).text()}).toArray();
+			}
+			var post = {};
+			post.type = type;
+			post.recipients = JSON.stringify(recipients);
+			$.post('/sms/recipients',post, function(res){
+				$("#sms-recipient-names").html(jade.render('sms-recipients',{recipients:res}));
+			});
+		},0);
+	});
 	$("#recipient_type label:first").trigger('click');
 	$("#load").hide();
 	$("body").on("click", ".display-voter", function(){

@@ -226,8 +226,23 @@ app.get('/sms', authenticate, function(req,res){
 		res.render('sms', {jobs:jobs});
 	});
 });
+
+app.post('/sms/recipients', authenticate, function(req,res){
+	var recipient_type = req.body.type.toLowerCase();
+	var recipients = JSON.parse(req.body.recipients);
+	if(recipient_type == "members" || recipient_type == "voters"){
+		Member
+		.find({appointed_location:{$in:recipients}},{personal_name:1})
+		.lean()
+		.exec(function(err, people){
+			res.json(people);
+		});
+	}else{
+		res.json({error:1});
+	}
+});
+
 app.post('/sms', authenticate, function(req,res){
-	console.log(req.body);
 	var recipient_type = req.body.type.toLowerCase();
 	var recipients = JSON.parse(req.body.recipients);
 	var data = req.body;
