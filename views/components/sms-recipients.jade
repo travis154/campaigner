@@ -1,6 +1,6 @@
 p sending sms to #{recipients.length} people
 
 -each person in recipients
-	span.label.label-info(style='margin-right:5px;margin-bottom:5px;display: inline-block;')
+	span.label.label-info.recipient-name(data-id=person._id, style='margin-right:5px;margin-bottom:5px;display: inline-block;')
 		| #{person.personal_name}
 		span.label.label-primary x

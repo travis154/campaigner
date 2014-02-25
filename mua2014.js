@@ -13,7 +13,7 @@ var moment = require('moment');
 var MongoStore = require('connect-mongo')(express);
 var request = require('request');
 var jade_browser = require('jade-browser');
-
+var args = require('yargs').argv;
 var conf = require('./conf');
 
 var sessionStore = new MongoStore({db:conf.db});
@@ -266,7 +266,12 @@ app.post('/sms', authenticate, function(req,res){
 		.find({appointed_location:{$in:recipients}},{personal_mobile:1})
 		.lean()
 		.exec(function(err, people){
-			var recipients = _.map(people, function(r){return r.personal_mobile});
+			var recipients = people;
+			if(data.dismiss){
+				var dismiss = JSON.parse(data.dismiss);
+				recipients = _.filter(people,function(r){return dismiss.indexOf(r._id.toString()) == -1 });
+			}
+			recipients = _.map(recipients, function(r){return r.personal_mobile});			
 			sendsms(message, recipients);
 		});
 	}else{

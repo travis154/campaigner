@@ -175,17 +175,18 @@ $(function(){
 		var message = $("#sms_message").val();
 		var type = $("#recipient_type label.active").text();
 		var recipients;
-		
+		var dismiss;
 		if(type == "Custom"){
 			recipients = $("#custom-recipients").val().split(",")
 		}else if(type == "Members" || type == "Voters"){
 			recipients = $("#recipient-toggle-location label.active").map(function(){return $(this).text()}).toArray();
+			dismiss = $(".recipient-name[data-dismiss]").map(function(){ return $(this).data().id }).toArray()
 		}
 		var post = {};
 		post.message = message;
 		post.type = type;
 		post.recipients = JSON.stringify(recipients);
-		
+		post.dismiss = JSON.stringify(dismiss);
 		
 		var url = "/sms";			
 		$.post(url, post, function(res){
@@ -229,11 +230,18 @@ $(function(){
 			r.addClass("hidden-row");
 			row.addClass("display-row");
 			self.siblings().remove();
-			self.attr("colspan",8);
+			self.attr("colspan",7);
 			var html = (jade.render('voter-profile',res));
 			self.html(html);
 			self.removeClass("display-voter");
 		});
+	});
+	$("body").on("click", ".recipient-name span", function(){
+		var parent = $(this).parent();
+		var person_id = parent.data().id;
+		parent.attr("data-dismiss",true);
+		parent.hide();
+		console.log(parent);
 	});
 });
 
