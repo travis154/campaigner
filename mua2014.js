@@ -392,7 +392,7 @@ app.post('/voters/:id/survey', authenticate, function(req,res){
 					api_secret:conf.nexmo.secret,
 					from:"MUAZ 2014",
 					to:"960" + item,
-					text: ppl.name + ", " + ppl.address + ", " + ppl.island + "votes for " + ppl.val + ".\n Status updated by " + req.user.username
+					text: ppl.name + ", " + ppl.address + ", " + ppl.island + "voting status: " + val + ".\n Status updated by " + req.user.username
 				}
 				request({
 					url:"https://rest.nexmo.com/sms/json",
