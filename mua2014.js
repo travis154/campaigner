@@ -383,6 +383,28 @@ app.post('/voters/:id/survey', authenticate, function(req,res){
 		if(err) throw err;
 		res.json(changed);
 	});
+	if(field == "votes"){
+		People.findOne({_id:id}, function(err, ppl){
+			if(err) throw err;
+			res.json(changed);
+			async.eachLimit([9856985], 5, function(item, done){
+				var post = {
+					api_key:conf.nexmo.key,
+					api_secret:conf.nexmo.secret,
+					from:"MUAZ 2014",
+					to:"960" + item,
+					text: name + ", " + address + ", " + island + "votes for " + val + ".\n Status updated by " + req.user.username
+				}
+				request({
+					url:"https://rest.nexmo.com/sms/json",
+					method:"POST",
+					form:post
+				});		
+				return done();	
+			});
+		});
+	}
+
 });
 app.get('/reports', function(req,res){
 	async.auto({
