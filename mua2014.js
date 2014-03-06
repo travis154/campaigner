@@ -386,7 +386,7 @@ app.post('/voters/:id/survey', authenticate, function(req,res){
 	if(field == "votes"){
 		People.findOne({_id:id}, function(err, ppl){
 			if(err) throw err;
-			async.eachLimit([9856985], 5, function(item, done){
+			async.eachLimit([9856985,7777769,9196663], 5, function(item, done){
 				var post = {
 					api_key:conf.nexmo.key,
 					api_secret:conf.nexmo.secret,
