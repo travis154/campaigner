@@ -331,7 +331,7 @@ app.get('/logout', function(req, res){
 	req.logout();
 	res.redirect('/login');
 });
-app.get('/voters', authenticate, function(req,res){
+app.get('/voters', function(req,res){
 	var options = {can_vote:{$ne:false}};
 	if(!req.xhr){
 		return res.render('voters');
@@ -388,10 +388,10 @@ app.get('/voters', authenticate, function(req,res){
 		res.json(ppl);
 	});
 });
-app.get('/final', authenticate, function(req,res){
+app.get('/final', function(req,res){
 	res.render('final');
 });
-app.post('/vote', authenticate, function(req,res){
+app.post('/vote', function(req,res){
 	var id = req.body.id;
 	People.findOne({_id:id}, function(err,vote){
 		var stat = !vote.voted;
