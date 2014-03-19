@@ -331,7 +331,6 @@ app.get('/logout', function(req, res){
 	req.logout();
 	res.redirect('/login');
 });
-
 app.get('/voters', authenticate, function(req,res){
 	var options = {can_vote:{$ne:false}};
 	if(!req.xhr){
@@ -352,11 +351,53 @@ app.get('/voters', authenticate, function(req,res){
 		}).save();
 		
 	}
+	if(req.query.registry){
+		var reg = req.query.registry;
+		var box;
+		switch(reg){
+			case "Madaveli":
+				box = new RegExp("Q03.02.1|Q03.02.2")
+				break;
+			case "Hoadehdhoo":
+				box = "Q03.03.1";
+				break;
+			case "Nadella":
+				box = "Q03.04.1";
+				break;
+			case "Male'":
+				box = "Q03.0.1";
+				break;
+			case "Hulhumale'":
+				box = "YT.0.4";
+				break;
+			case "Villingili":
+				box = "YT.0.7";
+				break;
+			case "Others":
+				box = "others";
+				break;
+		}
+		options.box = box;
+		console.log(options);
+	}
 	People.find(options,{log:0})
 	.lean()
+	.sort({"address":1})
 	.exec(function(err, ppl){
 		if(err) throw err;
 		res.json(ppl);
+	});
+});
+app.get('/final', authenticate, function(req,res){
+	res.render('final');
+});
+app.post('/vote', authenticate, function(req,res){
+	var id = req.body.id;
+	People.findOne({_id:id}, function(err,vote){
+		var stat = !vote.voted;
+		vote.voted = stat;
+		vote.save();
+		res.json(stat);
 	});
 });
 app.get('/voters/:id', authenticate, function(req,res){

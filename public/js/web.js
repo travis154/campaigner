@@ -131,6 +131,11 @@ $(function(){
 			getVoters();
 		},0);
 	});
+	$("#voter-registry").on('click', 'label', function(e){
+		setTimeout(function(){
+			getVoters();
+		},0);
+	});
 	$("#voter-constituency-search").on("keyup", function(e){
 		if(e.keyCode == 13){
 			setTimeout(function(){
@@ -243,16 +248,43 @@ $(function(){
 		parent.hide();
 		console.log(parent);
 	});
+	$("body").on("click",".address", function(){
+		var val = $(this).text();
+		$("#voter-constituency-search").val(val);
+		getVoters();
+	});
+	$("body").on("click",".toggle-vote", function(){
+		var id = $(this).data().id;
+		var self = $(this);
+		$.post("/vote",{id:id}, function(res){
+			if(res == true){
+				self.css("background","green");
+				self.text("YES");
+			}else{
+				self.css("background","red");
+				self.text("NO");			
+			}
+		});
+	});
 });
 
 var voterconsxhr;
-function getVoters(options){
+function getVoters(options, template){
+	var template = window.template;
 	var island = $("#voter-constituency label.active").text();
+	var registry = $("#voter-registry label.active").text();
+	var status = $("#voter-status label.active").text();
 	var search = $("#voter-constituency-search").val();
 	var query = {};
 	
 	if(island){
 		query.island = island;
+	}
+	if(registry){
+		query.registry = registry;
+	}
+	if(status){
+		query.status = status;
 	}
 	if(search){
 		query.search = search;
@@ -262,7 +294,7 @@ function getVoters(options){
 	}
 	$("#load").show();
 	voterconsxhr = $.getJSON("/voters/",query, function(res){
-		var html = jade.render('voterslist', {people:res});
+		var html = jade.render(template, {people:res});
 		$("#voters-listing").html(html);
 		$("#load").hide();
 		$.bootstrapSortable()

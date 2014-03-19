@@ -1,0 +1,63 @@
+extends layout
+
+block content
+	style .navbar {    display: none !important;  }
+	script window.template = "finallist";
+	h1 Voters of
+	section.btn-group(data-toggle='buttons')#voter-constituency
+		label.btn.btn-success.active
+			input(type="radio", name="cons")
+			| Madaveli
+		label.btn.btn-success
+			input(type="radio", name="cons")
+			| Hoadehdhoo
+		label.btn.btn-success
+			input(type="radio", name="cons")
+			| Nadella
+	h1 Registered in
+	section.btn-group(data-toggle='buttons')#voter-registry
+		label.btn.btn-success.active
+			input(type="radio", name="cons")
+			| Madaveli
+		label.btn.btn-success
+			input(type="radio", name="cons")
+			| Hoadehdhoo
+		label.btn.btn-success
+			input(type="radio", name="cons")
+			| Nadella
+		label.btn.btn-success
+			input(type="radio", name="cons")
+			| Male'
+		label.btn.btn-success
+			input(type="radio", name="cons")
+			| Hulhumale'
+		label.btn.btn-success
+			input(type="radio", name="cons")
+			| Villingili
+		label.btn.btn-success
+			input(type="radio", name="cons")
+			| Others
+	//
+		h1 Status
+		section.btn-group(data-toggle='buttons')#voter-status
+			label.btn.btn-success.active
+				input(type="radio", name="cons")
+				| Voted
+			label.btn.btn-success.active
+				input(type="radio", name="cons")
+				| Not voted
+	img(src="/images/load.gif")#load
+	br
+	br
+	section.row
+		section.col-md-3.col-xs-12
+			input(type='text', placeholder="Search by name, id, address").form-control#voter-constituency-search
+	br
+	table.table.table-bordered.sortable
+		thead
+			tr
+				th Name
+				th Address
+				th Contact
+				th Voted
+		tbody#voters-listing
