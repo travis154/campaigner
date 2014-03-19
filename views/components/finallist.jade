@@ -1,9 +1,9 @@
 -each person in people
 	tr(style=(person.votes == "Muaz" ? 'background:#E6E6E6;':""))
-		td(data-id=person._id.toString())=person.name
+		-var i = person.box == "others" ? "(" + person.registered_location + ")" : "";
+		td(data-id=person._id.toString()) #{person.name} #{i}
 		td.address
-			-var i = person.box == "others" ? "(" + person.island + ")" : "";
-			span(style="color:rgb(0, 173, 255);cursor:pointer;") #{person.address} #{i}
+			span(style="color:rgb(0, 173, 255);cursor:pointer;")=person.address
 		td=person.contact_number
 		td
 			button(data-id=person._id.toString(), type="button", style=(person.voted?"color:white;background:green":"color:white;background:red;"), data-toggle="button").btn.btn-primary.btn-block.toggle-vote=(person.voted?"YES":"NO")
