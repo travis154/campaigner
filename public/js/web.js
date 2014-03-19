@@ -266,10 +266,13 @@ $(function(){
 			}
 		});
 	});
+	$("#srch").on('click', function(){
+		getVoters();
+	});
 });
 
 var voterconsxhr;
-function getVoters(options, template){
+function getVoters(options){
 	var template = window.template;
 	var island = $("#voter-constituency label.active").text();
 	var registry = $("#voter-registry label.active").text();

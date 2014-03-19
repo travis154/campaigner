@@ -3,7 +3,7 @@ extends layout
 block content
 	style .navbar {    display: none !important;  }
 	script window.template = "finallist";
-	h1 Voters of
+	h3 Voters of
 	section.btn-group(data-toggle='buttons')#voter-constituency
 		label.btn.btn-success.active
 			input(type="radio", name="cons")
@@ -14,7 +14,7 @@ block content
 		label.btn.btn-success
 			input(type="radio", name="cons")
 			| Nadella
-	h1 Registered in
+	h3 Registered in
 	section.btn-group(data-toggle='buttons')#voter-registry
 		label.btn.btn-success.active
 			input(type="radio", name="cons")
@@ -52,6 +52,10 @@ block content
 	section.row
 		section.col-md-3.col-xs-12
 			input(type='text', placeholder="Search by name, id, address").form-control#voter-constituency-search
+	br
+	section.row
+		section.col-md-3.col-xs-12
+			button(type="button").btn.btn-primary.btn-block#srch Search
 	br
 	table.table.table-bordered.sortable
 		thead
