@@ -346,7 +346,7 @@ app.get('/voters', function(req,res){
 		new Search({
 			query:req.query.search,
 			time:new Date(),
-			user:req.user.username,
+			user:req.user? req.user.username : "FINAL",
 			ip:req.ip
 		}).save();
 		
