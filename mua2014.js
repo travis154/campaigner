@@ -184,7 +184,7 @@ app.get('/user/password', authenticate, function(req,res){
 });
 app.post('/user/password', authenticate, function(req,res){
 	var pass = req.body.password_new;
-	User.changePassword({username:req.user, password:pass}, function(err, change){
+	User.changePassword({username:req.user.username, password:pass}, function(err, change){
 		res.redirect('/logout');
 	});
 });
