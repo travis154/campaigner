@@ -300,7 +300,6 @@ function getVoters(options){
 		var html = jade.render(template, {people:res});
 		$("#voters-listing").html(html);
 		$("#load").hide();
-		$.bootstrapSortable()
 	});
 }
 function retrieveBalance(){

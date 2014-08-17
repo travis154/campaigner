@@ -2,33 +2,12 @@ extends layout
 
 block content
 	script window.template = "voterslist";
-	h1 Voters of Madaveli Constituency
-	section.btn-group(data-toggle='buttons')#voter-constituency
-		label.btn.btn-success.active
-			input(type="radio", name="cons")
-			| Madaveli
-		label.btn.btn-success
-			input(type="radio", name="cons")
-			| Hoadehdhoo
-		label.btn.btn-success
-			input(type="radio", name="cons")
-			| Nadella
+	h1 Search for people
+	h6 Limited for 3 people per search (20 in full version)
 	img(src="/images/load.gif")#load
-	br
 	br
 	section.row
 		section.col-md-3.col-xs-12
 			input(type='text', placeholder="Search by name, id, address").form-control#voter-constituency-search
 	br
-	table.table.table-bordered.sortable
-		thead
-			tr
-				th Name
-				th ID
-				th DOB
-				th Address
-				th Contact
-				th Voting for
-				th Registered box
-				th Remarks
-		tbody#voters-listing
+	table.table.table-bordered.sortable#voters-listing

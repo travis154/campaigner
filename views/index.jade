@@ -3,57 +3,59 @@ extends layouthome
 block content
 	br
 	br
-	section(style='text-align:center')
-		h1(style='font-weight:bold;font-size:60px;text-align:center') MUAZ 2014
-		h1(style='color:green') Members Portal
+	section.row
+		section.col-md-2
+			img(src='/images/asurumaa.png', style='width: 200px')
+		section.col-md-3
+			h1(style='color:green') Asurumaa Portal
+			h3
+				| &nbsp;
+				span.label.label-danger trial version
+			h6 version 1.0 beta
 	hr
 	section.row
 		section.col-md-8
 			section.row
-				a(href='/members').col-md-3.home-task
+				a(href='/voters').col-md-3.home-task
 					section
 						span.glyphicon.glyphicon-th-list
-					h4 Members
-				a(href='/user/password').col-md-3.home-task
+					h4 Voters
+				a(href='#').col-md-3.home-task
+					section
+						span.glyphicon.glyphicon-th-list
+					h4 Add/Edit voter
+					h6 Only in full version
+				a(href='#').col-md-3.home-task
+					section
+						span.glyphicon.glyphicon-pencil
+					h4 Send SMS
+					h6 Only in full version
+				a(href='/users').col-md-3.home-task
+					section
+						span.glyphicon.glyphicon-th-large
+					h4 Users
+				a(href='#').col-md-3.home-task
+					section
+						span.glyphicon.glyphicon-plus
+					h4 Add User
+					h6 Only in full version
+				a(href='#').col-md-3.home-task
 					section
 						span.glyphicon.glyphicon-floppy-open
 					h4 Change Password
-				-if(usertype == "supervisor")
-					a(href='/sms').col-md-3.home-task
-						section
-							span.glyphicon.glyphicon-pencil
-						h4 Send SMS
-					a(href='/users').col-md-3.home-task
-						section
-							span.glyphicon.glyphicon-th-large
-						h4 Users
-					a(href='/user/add').col-md-3.home-task
-						section
-							span.glyphicon.glyphicon-plus
-						h4 Add User
+					h6 Only in full version
+				a(href='#').col-md-3.home-task
+					section
+						span.glyphicon.glyphicon-tasks
+					h4 Access Logs
+					h6 Only in full version
 				a(href='/logout').col-md-3.home-task
 					section
 						span.glyphicon.glyphicon-minus-sign
 					h4 Logout
-			section.row
-				hr
-				a(href='/voters').col-md-3.home-task
-					section
-						span.glyphicon.glyphicon-list-alt
-					h4 Voters
-				-if(usertype == "supervisor")
-					a(href='/reports').col-md-3.home-task
-						section
-							span.glyphicon.glyphicon-list-alt
-						h4 Reports
 
 		section.col-md-4
 			section.jumbotron
-				h4 Total Registered Members
+				h4 Total Registered Users
 				h3=count
 				hr
-				if(latest_mem)
-					h4 Latest Member
-					h3=latest_mem
-					hr
-

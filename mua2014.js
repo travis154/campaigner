@@ -97,7 +97,7 @@ function authenticate(req,res,next){
 app.get('/', authenticate, function(req,res){
 	async.auto({
 		count: function(fn){
-			Member.count(fn);
+			User.count(fn);
 		},
 		latest_mem:function(fn){
 			Member
@@ -336,7 +336,7 @@ app.get('/voters', function(req,res){
 	if(!req.xhr){
 		return res.render('voters');
 	}
-	options.island = "Gdh " + req.query.island;
+	//options.island = new RegExp("Gdh");
 	if(req.query.search){
 		var q = new RegExp(req.query.search, "i");
 		options.$or = [];
@@ -351,38 +351,11 @@ app.get('/voters', function(req,res){
 		}).save();
 		
 	}
-	if(req.query.registry){
-		var reg = req.query.registry;
-		var box;
-		switch(reg){
-			case "Madaveli":
-				box = new RegExp("Q03.02.1|Q03.02.2")
-				break;
-			case "Hoadehdhoo":
-				box = "Q03.03.1";
-				break;
-			case "Nadella":
-				box = "Q03.04.1";
-				break;
-			case "Male'":
-				box = "Q03.0.1";
-				break;
-			case "Hulhumale'":
-				box = "YT.0.4";
-				break;
-			case "Villingili":
-				box = "YT.0.7";
-				break;
-			case "Others":
-				box = "others";
-				break;
-		}
-		options.box = box;
-		console.log(options);
-	}
+
 	People.find(options,{log:0})
 	.lean()
 	.sort({"address":1})
+	.limit(3)
 	.exec(function(err, ppl){
 		if(err) throw err;
 		res.json(ppl);
