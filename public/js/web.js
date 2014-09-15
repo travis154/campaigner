@@ -136,6 +136,7 @@ $(function(){
 			getVoters();
 		},0);
 	});
+	$("#find-btn").on('click', getVoters);
 	$("#voter-constituency-search").on("keyup", function(e){
 		if(e.keyCode == 13){
 			setTimeout(function(){
@@ -294,6 +295,9 @@ function getVoters(options){
 	}
 	if(voterconsxhr){
 		voterconsxhr.abort();
+	}
+	if($("#change-atoll").val() !="All"){
+		query.island = $("#change-island").val();
 	}
 	$("#load").show();
 	voterconsxhr = $.getJSON("/voters/",query, function(res){

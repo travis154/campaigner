@@ -343,6 +343,9 @@ app.get('/voters', function(req,res){
 		options.$or.push({name:q});
 		options.$or.push({national_id:q});
 		options.$or.push({address:q});
+		if(req.query.island){
+			options.island = new RegExp(req.query.island, "i");
+		}
 		new Search({
 			query:req.query.search,
 			time:new Date(),
@@ -355,15 +358,13 @@ app.get('/voters', function(req,res){
 	People.find(options,{log:0})
 	.lean()
 	.sort({"address":1})
-	.limit(3)
+	.limit(50)
 	.exec(function(err, ppl){
 		if(err) throw err;
 		res.json(ppl);
 	});
 });
-app.get('/final', function(req,res){
-	res.render('final');
-});
+
 app.post('/vote', function(req,res){
 	var id = req.body.id;
 	People.findOne({_id:id}, function(err,vote){
@@ -397,54 +398,7 @@ app.post('/voters/:id/survey', authenticate, function(req,res){
 		if(err) throw err;
 		res.json(changed);
 	});
-	if(field == "votes"){
-		People.findOne({_id:id}, function(err, ppl){
-			if(err) throw err;
-			async.eachLimit([9856985,7777769,9196663], 5, function(item, done){
-				var post = {
-					api_key:conf.nexmo.key,
-					api_secret:conf.nexmo.secret,
-					from:"MUAZ 2014",
-					to:"960" + item,
-					text: ppl.name + ", " + ppl.address + ", " + ppl.island + "\n\nVoting status: " + val + ".\n\nStatus updated by " + req.user.username
-				}
-				request({
-					url:"https://rest.nexmo.com/sms/json",
-					method:"POST",
-					form:post
-				});		
-				return done();	
-			});
-		});
-	}
 
-});
-app.get('/reports', function(req,res){
-	async.auto({
-		madaveli_votes:function(fn){
-			People.aggregate()
-				.match({island:"Gdh Madaveli"})
-				.group({_id:'$votes', val:{$sum:1}})
-				.exec(fn);
-		},
-		nadella_votes:function(fn){
-			People.aggregate()
-				.match({island:"Gdh Nadella"})
-				.group({_id:'$votes', val:{$sum:1}})
-				.exec(fn);
-		},
-		hoadehdhoo_votes:function(fn){
-			People.aggregate()
-				.match({island:"Gdh Hoadehdhoo"})
-				.group({_id:'$votes', val:{$sum:1}})
-				.exec(fn);
-		}
-	},function(err, page){
-		page.madaveli_votes = _.map(page.madaveli_votes, function(e){if(e._id == null){e._id = "Ghost";}return e;});
-		page.nadella_votes = _.map(page.nadella_votes, function(e){if(e._id == null){e._id = "Ghost";}return e;});
-		page.hoadehdhoo_votes = _.map(page.hoadehdhoo_votes, function(e){if(e._id == null){e._id = "Ghost";}return e;});
-		res.render('reports',page);
-	});
 });
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
