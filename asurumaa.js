@@ -331,13 +331,35 @@ app.get('/logout', function(req, res){
 	req.logout();
 	res.redirect('/login');
 });
-app.get('/voters', function(req,res){
+People
+.aggregate([
+	{
+		$group:{
+			_id: "$island"
+		}
+	}
+]).exec(function(err, data){
+	var d = {};
+	data.forEach(function(island){
+		var s = island._id.split(' ');
+		if(s.length == 2 && s[0].length < 4){
+			s[0] = s[0].toUpperCase();
+			if(!d[s[0]]){
+				d[s[0]] = [];
+			}
+			d[s[0]].push(s[1]);
+		}
+	});
+	console.log(JSON.stringify(d));
+});
+
+app.get('/voters', authenticate, function(req,res){
 	var options = {can_vote:{$ne:false}};
 	if(!req.xhr){
 		return res.render('voters');
 	}
 	//options.island = new RegExp("Gdh");
-	if(req.query.search){
+	if(typeof req.query.search == 'string'){
 		var q = new RegExp(req.query.search, "i");
 		options.$or = [];
 		options.$or.push({name:q});
@@ -354,45 +376,34 @@ app.get('/voters', function(req,res){
 		}).save();
 		
 	}
-
+	console.log(req.query)
 	People.find(options,{log:0})
 	.lean()
 	.sort({"address":1})
 	.limit(50)
 	.exec(function(err, ppl){
 		if(err) throw err;
+		ppl = ppl.map(function(p){
+			var d = p.dob;
+			var c = moment(d).format('DD/MM/YYYY');
+			p.dob = c;
+			return p;
+		});
 		res.json(ppl);
 	});
 });
 
-app.post('/vote', function(req,res){
-	var id = req.body.id;
-	People.findOne({_id:id}, function(err,vote){
-		var stat = !vote.voted;
-		vote.voted = stat;
-		vote.save();
-		res.json(stat);
-	});
-});
+
 app.get('/voters/:id', authenticate, function(req,res){
 	var id = req.params.id;
 	People.findOne({_id:id}, function(err, person){
 		res.json({person:person});
 	});
 });
-app.post('/voters/:id/survey', authenticate, function(req,res){
-	var field = req.body.field;
-	var value = req.body.value;
+app.post('/voters/:id', authenticate, function(req,res){
 	var id = req.params.id;
-	var update = {$set:{}};
-	var val = value.trim();
-	update.$set[field] = val;
-	update.$push = {};
-	update.$push['log'] = {
-		updated:new Date(),
-		field:field,
-		value:val,
-		user:req.user.username
+	var update = {
+		$set:req.body
 	};
 	People.update({_id:id},update, function(err, changed){
 		if(err) throw err;

@@ -144,29 +144,6 @@ $(function(){
 			},0);
 		}
 	});
-	$("body").on("click", ".update-survey-mcq label", function(){
-		var field = $(this).parent().data().field;
-		var id = $(this).parent().data().id;
-		var value = $(this).text();
-		$.post("/voters/" + id + "/survey",{field:field, value:value}, function(res){
-			
-		});
-	});
-	$("body").on("change", ".update-survey-text", function(){
-		var field = $(this).data().field;
-		var id = $(this).data().id;
-		var value = $(this).val();
-		$.post("/voters/" + id + "/survey",{field:field, value:value}, function(res){
-		});
-	});
-	$("body").on("click", ".update-survey-location", function(){
-		var id = $(this).data().id;
-		navigator.geolocation.getCurrentPosition(function(position) {
-			$.post("/voters/" + id + "/survey",{field:"address_location", value:JSON.stringify(position)}, function(res){
-			
-			});
-		});
-	});
 	$("body").on('click', '#recipient_type label', function(){
 		var text = $(this).text();
 		if(text == "Custom"){
@@ -236,7 +213,7 @@ $(function(){
 			r.addClass("hidden-row");
 			row.addClass("display-row");
 			self.siblings().remove();
-			self.attr("colspan",7);
+			self.attr("colspan",8);
 			var html = (jade.render('voter-profile',res));
 			self.html(html);
 			self.removeClass("display-voter");
@@ -290,9 +267,7 @@ function getVoters(options){
 	if(status){
 		query.status = status;
 	}
-	if(search){
-		query.search = search;
-	}
+	query.search = search || "";
 	if(voterconsxhr){
 		voterconsxhr.abort();
 	}

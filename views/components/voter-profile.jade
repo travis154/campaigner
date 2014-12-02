@@ -1,9 +1,33 @@
 section
 	section.row
-		section.col-md-2.col-xs-3
+		section.col-md-2
 			img.img-circle(src="/ppl/oldppl/" + person.national_id + ".jpg")
-		section.col-md-9.col-xs-8
+		section.col-md-4
 			h3 #{person.name} (#{person.national_id})
 			p
 				section=person.dob
 				section=person.address
+		section.col-md-4
+			section.btn-group(data-toggle='buttons').person-data-party
+				label.btn.btn-success.active
+					input(type="radio", name="specialized_constituency")
+					| PPM
+				label.btn.btn-success
+					input(type="radio", name="specialized_constituency")
+					| Independent
+				label.btn.btn-success
+					input(type="radio", name="specialized_constituency")
+					| MDP
+
+				label.btn.btn-success
+					input(type="radio", name="specialized_constituency")
+					| JP
+
+				label.btn.btn-success
+					input(type="radio", name="specialized_constituency")
+					| AP
+			hr
+			section.form-group
+				textarea(placeholder='Remarks').form-control.person-data-remarks=person.remarks
+			section
+				button(type='button', data-id=person._id).btn.save-person-data Save
